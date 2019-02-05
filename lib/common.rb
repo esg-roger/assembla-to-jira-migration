@@ -195,9 +195,11 @@ unless /cloud|hosted/.match?(JIRA_SERVER_TYPE)
 end
 
 base64_admin = if JIRA_SERVER_TYPE == 'hosted'
-                 Base64.encode64(JIRA_API_ADMIN_USER + ':' + ENV['JIRA_API_ADMIN_PASSWORD'])
+                 str = JIRA_API_ADMIN_USER + ':' + ENV['JIRA_API_ADMIN_KEY']
+                 Base64.strict_encode64(str.strip)
                else
-                 Base64.encode64(JIRA_API_ADMIN_EMAIL + ':' + ENV['JIRA_API_ADMIN_PASSWORD'])
+                 str = JIRA_API_ADMIN_EMAIL + ':' + ENV['JIRA_API_ADMIN_KEY']
+                 Base64.strict_encode64(str.strip)
                end
 
 JIRA_HEADERS_ADMIN = {
